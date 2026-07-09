@@ -1,0 +1,174 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Aadhaar Status</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="topbar">
+
+        <div class="left">
+            <img src="assets/logo.jpg"
+                 alt="Logo"
+                 class="emblem-img">
+
+            <div class="org">
+                Unique Identification Authority of India
+            </div>
+        </div>
+
+        <nav class="main-nav">
+            <a href="index.html">Home</a>
+            <a href="check-status.html" class="active">Check Status</a>
+            <a href="download.html">Download Aadhaar</a>
+            <a href="update.html">Update Aadhaar</a>
+            <a href="verify.html">Verify Aadhaar</a>
+            <a href="contact.html">Contact Us</a>
+        </nav>
+
+        <img src="assets/logo.jpg"
+             alt="Logo"
+             class="aadhaar-logo">
+
+    </header>
+
+    <!-- Main Content -->
+    <main class="form-page">
+
+        <section class="page-hero">
+
+            <h1>Check Aadhaar Status</h1>
+
+            <p>
+                Enter your Enrollment ID or Aadhaar Number
+                to check the current status of your Aadhaar.
+            </p>
+
+        </section>
+
+        <div class="three-col">
+
+            <!-- Left Column -->
+            <section class="left-col">
+
+                <div class="form-card">
+
+                    <form id="statusForm">
+
+                        <label class="field-title">
+                            Enrollment / Aadhaar Number
+                        </label>
+
+                        <input
+                            id="eid"
+                            maxlength="14"
+                            placeholder="1234 5678 9012"
+                            required>
+
+                        <label class="field-title">
+                            Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="date"
+                            required>
+
+                        <div
+                            id="captchaStatus"
+                            class="captcha-box"
+                            style="display:none;">
+
+                            <label>
+                                <input type="checkbox">
+                                I'm not a robot
+                            </label>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn blue">
+
+                            View Status
+
+                        </button>
+
+                    </form>
+
+                    <div
+                        id="statusResult"
+                        class="result-box"
+                        style="display:none;">
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- Right Column -->
+            <aside class="right-col">
+
+                <div class="faq-card">
+
+                    <img
+                        src="assets/aadhar.jpg"
+                        alt="Update Aadhaar"
+                        style="width:100%;
+                               border-radius:10px;
+                               margin-bottom:15px;">
+
+                    <h3>Helpful Information</h3>
+
+                    <p>
+                        <strong>Enrollment ID:</strong>
+                        Available on your acknowledgment slip.
+                    </p>
+
+                    <p>
+                        <strong>Processing Time:</strong>
+                        Aadhaar is generally generated
+                        within 90 days of enrollment.
+                    </p>
+
+                    <p>
+                        <strong>Status Tracking:</strong>
+                        Use your Enrollment ID or Aadhaar
+                        Number to check progress.
+                    </p>
+
+                    <p>
+                        <strong>Support:</strong>
+                        Call 1947 or email
+                        help@uidai.gov.in
+                    </p>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        © 2025 Aadhaar Demo Portal |
+        This is a demonstration site and is not affiliated with
+        the Unique Identification Authority of India (UIDAI).
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/security-check.js"></script>
+    <script src="js/login-detection.js"></script>
+
+</body>
+</html>
+

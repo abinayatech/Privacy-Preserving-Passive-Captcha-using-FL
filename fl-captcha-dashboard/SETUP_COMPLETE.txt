@@ -1,0 +1,9 @@
+﻿# FL-CAPTCHA Setup Complete!
+echo "✅ Files created successfully!"
+echo "📁 Directory structure:"
+Get-ChildItem -Recurse | Format-Table Name, Length -AutoSize
+echo "`n🚀 To run the application:"
+echo "1. Install dependencies: pip install -r requirements.txt"
+echo "2. Start server: python app.py"
+echo "3. Open browser: http://localhost:5000"
+echo "`n💡 Initial setup includes 2 clients. Click 'Add Client' and 'Start FL Round' to begin!"

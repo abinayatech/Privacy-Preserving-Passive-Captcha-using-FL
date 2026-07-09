@@ -1,0 +1,47 @@
+# Node modules - NEVER commit these!
+node_modules/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Python environment
+venv/
+env/
+Scripts/
+python*.exe
+pip*.exe
+
+# Test artifacts (optional - keep if you need them)
+*.png
+*.webm
+*.zip
+trace.zip
+
+# Build files
+*.exe
+*.dll
+*.so
+*.dylib
+*.node
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*backup*
+*.backup
+*BACKUP*
+backup-*/
+
+# Database files (if regenerated)
+*.db
+
+# Logs
+*.log
+federated_logs/
+
+# IDE files
+.vscode/
+.idea/

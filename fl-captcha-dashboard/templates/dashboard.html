@@ -1,0 +1,712 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FL-CAPTCHA Dashboard v4.1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+            border-bottom: 3px solid rgba(255,255,255,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .header .version {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .controls {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 140px;
+            justify-content: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: white;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+            color: white;
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #f46b45, #eea849);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .stat-title {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a2980;
+            margin: 10px 0;
+        }
+        
+        .stat-trend {
+            font-size: 0.9rem;
+            padding: 4px 10px;
+            border-radius: 15px;
+            display: inline-block;
+            font-weight: 600;
+        }
+        
+        .trend-up { background: #e7f7ef; color: #00a86b; }
+        .trend-down { background: #ffeaea; color: #ff4757; }
+        
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            padding: 0 30px 30px;
+        }
+        
+        .chart-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+        
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+        
+        .log-panel {
+            background: #f8f9fa;
+            margin: 0 30px 30px;
+            border-radius: 15px;
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .log-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .log-entry {
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid #1a2980;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .log-time {
+            color: #666;
+            font-size: 0.85rem;
+            min-width: 70px;
+        }
+        
+        .log-success { border-left-color: #00b09b; }
+        .log-error { border-left-color: #ff4757; }
+        .log-warning { border-left-color: #eea849; }
+        .log-info { border-left-color: #1a2980; }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .realtime-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #00b09b;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="version">Dashboard v4.1</div>
+            <h1>FL-CAPTCHA Dashboard</h1>
+            <p>Real-time Federated Learning monitoring with FIXED accuracy calculation</p>
+            <div style="margin-top: 15px;">
+                <span class="realtime-indicator"></span>
+                <span>Live data updating every 5 seconds</span>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn btn-primary" onclick="addClient()">
+                <span>👤</span> Add Client
+            </button>
+            <button class="btn btn-success" onclick="runFLRound()">
+                <span>⚡</span> Start FL Round
+            </button>
+            <button class="btn btn-warning" onclick="testCaptcha()">
+                <span>🔒</span> Test FL-CAPTCHA
+            </button>
+            <button class="btn btn-danger" onclick="resetSystem()">
+                <span>🔄</span> Reset System
+            </button>
+            <button class="btn btn-primary" onclick="refreshData()">
+                <span>📊</span> Refresh Data
+            </button>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background: #e3f2fd; color: #1a2980;">📈</div>
+                    <div>
+                        <div class="stat-title">FL Round</div>
+                    </div>
+                </div>
+                <div class="stat-value" id="current-round">1</div>
+                <div class="stat-trend trend-up">Active</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background: #e8f5e9; color: #00b09b;">🎯</div>
+                    <div>
+                        <div class="stat-title">Model Accuracy</div>
+                    </div>
+                </div>
+                <div class="stat-value" id="accuracy-value">45.0%</div>
+                <div class="stat-trend trend-up" id="accuracy-trend">+0.0%</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background: #f3e5f5; color: #7b1fa2;">👥</div>
+                    <div>
+                        <div class="stat-title">Active Clients</div>
+                    </div>
+                </div>
+                <div class="stat-value" id="clients-value">0</div>
+                <div class="stat-trend trend-up" id="clients-trend">+0</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background: #fff3e0; color: #f57c00;">📊</div>
+                    <div>
+                        <div class="stat-title">Total Samples</div>
+                    </div>
+                </div>
+                <div class="stat-value" id="samples-value">0</div>
+                <div class="stat-trend trend-up" id="samples-trend">+0</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background: #fce4ec; color: #c2185b;">🛡️</div>
+                    <div>
+                        <div class="stat-title">Bot Detection</div>
+                    </div>
+                </div>
+                <div class="stat-value" id="detection-value">70.0%</div>
+                <div class="stat-trend trend-up" id="detection-trend">+0.0%</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background: #e0f7fa; color: #006064;">⏱️</div>
+                    <div>
+                        <div class="stat-title">System Uptime</div>
+                    </div>
+                </div>
+                <div class="stat-value" id="uptime-value">00:00:00</div>
+                <div class="stat-trend trend-up">Running</div>
+            </div>
+        </div>
+        
+        <div class="charts-container">
+            <div class="chart-card">
+                <div class="chart-title">📈 Accuracy Progress</div>
+                <div class="chart-container">
+                    <canvas id="accuracyChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-title">👥 Client Activity</div>
+                <div class="chart-container">
+                    <canvas id="clientsChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="log-panel">
+            <div class="log-title">📋 System Log</div>
+            <div id="log-entries">
+                <div class="log-entry log-info">
+                    <div class="log-time" id="current-time">[19:00:00]</div>
+                    <div>Dashboard v4.1 loaded with FIXED accuracy calculation</div>
+                </div>
+                <div class="log-entry log-info">
+                    <div class="log-time">[19:00:01]</div>
+                    <div>💡 Tip: Add 2+ clients, then click "Start FL Round" for Federated Learning!</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>FL-CAPTCHA Dashboard v4.1 | Real-time Federated Learning Monitoring | Data updates every 5 seconds</p>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize variables
+        let previousData = {};
+        let logEntries = [];
+        let accuracyChart, clientsChart;
+        
+        // Initialize charts
+        function initCharts() {
+            const accuracyCtx = document.getElementById('accuracyChart').getContext('2d');
+            const clientsCtx = document.getElementById('clientsChart').getContext('2d');
+            
+            accuracyChart = new Chart(accuracyCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Accuracy (%)',
+                        data: [],
+                        borderColor: '#1a2980',
+                        backgroundColor: 'rgba(26, 41, 128, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#1a2980',
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: value => value + '%'
+                            },
+                            grid: {
+                                color: 'rgba(0,0,0,0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(0,0,0,0.05)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+            
+            clientsChart = new Chart(clientsCtx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Active Clients',
+                        data: [],
+                        backgroundColor: 'rgba(0, 176, 155, 0.7)',
+                        borderColor: 'rgba(0, 176, 155, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            },
+                            grid: {
+                                color: 'rgba(0,0,0,0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(0,0,0,0.05)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Add log entry
+        function addLog(message, type = 'info') {
+            const now = new Date();
+            const timeString = `[${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}]`;
+            
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${type}`;
+            logEntry.innerHTML = `
+                <div class="log-time">${timeString}</div>
+                <div>${message}</div>
+            `;
+            
+            document.getElementById('log-entries').prepend(logEntry);
+            
+            // Keep only last 20 logs
+            const logs = document.getElementById('log-entries').children;
+            if (logs.length > 20) {
+                logs[logs.length - 1].remove();
+            }
+        }
+        
+        // Update time
+        function updateTime() {
+            const now = new Date();
+            const timeString = `[${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}]`;
+            document.querySelectorAll('.log-time')[0].textContent = timeString;
+        }
+        
+        // Fetch dashboard data
+        async function fetchDashboardData() {
+            try {
+                const response = await fetch('/dashboard-data');
+                const data = await response.json();
+                
+                // Update stats cards with animation
+                updateStatWithAnimation('current-round', data.current_round);
+                updateStatWithAnimation('accuracy-value', data.accuracy + '%');
+                updateStatWithAnimation('clients-value', data.active_clients);
+                updateStatWithAnimation('samples-value', data.total_samples.toLocaleString());
+                updateStatWithAnimation('detection-value', data.bot_detection_rate + '%');
+                updateStatWithAnimation('uptime-value', data.uptime);
+                
+                // Calculate trends
+                if (previousData.accuracy) {
+                    const accuracyDiff = (data.accuracy - previousData.accuracy).toFixed(1);
+                    updateTrend('accuracy-trend', accuracyDiff, '%');
+                    
+                    const clientsDiff = data.active_clients - previousData.active_clients;
+                    updateTrend('clients-trend', clientsDiff, '');
+                    
+                    const samplesDiff = data.total_samples - previousData.total_samples;
+                    updateTrend('samples-trend', samplesDiff, '');
+                    
+                    const detectionDiff = (data.bot_detection_rate - previousData.bot_detection_rate).toFixed(1);
+                    updateTrend('detection-trend', detectionDiff, '%');
+                }
+                
+                // Update charts
+                if (data.rounds_history && data.rounds_history.length > 0) {
+                    const rounds = data.rounds_history.map(r => 'Round ' + r.round);
+                    const accuracies = data.rounds_history.map(r => r.accuracy);
+                    const clients = data.rounds_history.map(r => r.clients);
+                    
+                    accuracyChart.data.labels = rounds;
+                    accuracyChart.data.datasets[0].data = accuracies;
+                    accuracyChart.update('none');
+                    
+                    clientsChart.data.labels = rounds;
+                    clientsChart.data.datasets[0].data = clients;
+                    clientsChart.update('none');
+                }
+                
+                previousData = {
+                    accuracy: data.accuracy,
+                    active_clients: data.active_clients,
+                    total_samples: data.total_samples,
+                    bot_detection_rate: data.bot_detection_rate
+                };
+                
+            } catch (error) {
+                console.error('Error fetching dashboard data:', error);
+                addLog('❌ Error connecting to server', 'error');
+            }
+        }
+        
+        // Update stat with animation
+        function updateStatWithAnimation(elementId, newValue) {
+            const element = document.getElementById(elementId);
+            if (element && element.textContent !== newValue) {
+                element.style.transform = 'scale(1.2)';
+                element.style.color = '#ff4757';
+                setTimeout(() => {
+                    element.textContent = newValue;
+                    element.style.transform = 'scale(1)';
+                    element.style.color = '#1a2980';
+                }, 200);
+            } else if (element) {
+                element.textContent = newValue;
+            }
+        }
+        
+        // Update trend indicator
+        function updateTrend(elementId, diff, suffix) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                if (diff > 0) {
+                    element.textContent = `+${diff}${suffix}`;
+                    element.className = 'stat-trend trend-up';
+                } else if (diff < 0) {
+                    element.textContent = `${diff}${suffix}`;
+                    element.className = 'stat-trend trend-down';
+                } else {
+                    element.textContent = `0${suffix}`;
+                    element.className = 'stat-trend trend-up';
+                }
+            }
+        }
+        
+        // Add client
+        async function addClient() {
+            try {
+                const response = await fetch('/add-client', { method: 'POST' });
+                const result = await response.json();
+                
+                if (result.client_id) {
+                    addLog(`✅ Client ${result.client_id} added with ${result.samples} samples`, 'success');
+                }
+                
+                fetchDashboardData();
+            } catch (error) {
+                addLog('❌ Error adding client', 'error');
+            }
+        }
+        
+        // Run FL round
+        async function runFLRound() {
+            try {
+                const response = await fetch('/run-fl-round', { method: 'POST' });
+                const result = await response.json();
+                
+                if (result.success) {
+                    addLog(result.message, 'success');
+                    if (result.details) {
+                        addLog(result.details, 'info');
+                    }
+                } else {
+                    addLog(result.message, 'error');
+                    if (result.suggestion) {
+                        addLog(result.suggestion, 'warning');
+                    }
+                }
+                
+                fetchDashboardData();
+            } catch (error) {
+                addLog('❌ Error running FL round', 'error');
+            }
+        }
+        
+        // Reset system
+        async function resetSystem() {
+            if (confirm('Are you sure you want to reset the system? All data will be lost.')) {
+                try {
+                    const response = await fetch('/reset-system', { method: 'POST' });
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        addLog('🔄 System reset successfully!', 'info');
+                        addLog('💡 Add clients and start FL rounds to collect new data', 'info');
+                    }
+                    
+                    fetchDashboardData();
+                } catch (error) {
+                    addLog('❌ Error resetting system', 'error');
+                }
+            }
+        }
+        
+        // Test CAPTCHA
+        function testCaptcha() {
+            window.open('/fl-captcha', '_blank');
+        }
+        
+        // Refresh data
+        function refreshData() {
+            addLog('🔄 Manually refreshing dashboard data', 'info');
+            fetchDashboardData();
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+            fetchDashboardData();
+            
+            // Auto-refresh every 5 seconds
+            setInterval(fetchDashboardData, 5000);
+            setInterval(updateTime, 1000);
+            
+            // Initial message
+            setTimeout(() => {
+                addLog('💡 Click "Add Client" 2-3 times, then "Start FL Round" to begin Federated Learning!', 'info');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

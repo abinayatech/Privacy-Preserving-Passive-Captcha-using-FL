@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ML CAPTCHA TEST</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        button { 
+            background: #ff4444; 
+            color: white; 
+            padding: 15px 30px; 
+            font-size: 18px; 
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+        button:hover { background: #ff0000; }
+        .status { 
+            background: #f0f0f0; 
+            padding: 10px; 
+            margin: 10px 0;
+            border-left: 4px solid #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <h1>?? ML CAPTCHA Direct Test</h1>
+    <p>This page has NO cache issues. Click the red button below.</p>
+    
+    <div class="status" id="status">Ready to test...</div>
+    
+    <button id="testButton">?? TEST ML POPUP</button>
+    
+    <div id="result" style="display:none; background:#e8f5e8; padding:15px; margin:15px 0;">
+        <h3>Test Result:</h3>
+        <pre id="resultText"></pre>
+    </div>
+    
+    <script>
+        console.log("=== DIRECT TEST STARTED ===");
+        
+        const button = document.getElementById('testButton');
+        const status = document.getElementById('status');
+        const resultDiv = document.getElementById('result');
+        const resultText = document.getElementById('resultText');
+        
+        button.onclick = async function() {
+            console.log("?? Test button clicked!");
+            
+            // Visual feedback
+            button.style.background = '#ff9900';
+            button.textContent = 'Checking...';
+            status.textContent = 'Sending to ML server...';
+            resultDiv.style.display = 'block';
+            
+            // Show FIRST alert (proves JavaScript is working)
+            alert("? JavaScript is working! Now checking ML...");
+            
+            try {
+                // Send to Flask server
+                const response = await fetch('http://localhost:5000/predict', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        features: [0.5, 0.6, 0.7, 0.8, 0.9],  // Human-like
+                        sessionId: 'direct_test_' + Date.now()
+                    })
+                });
+                
+                const result = await response.json();
+                console.log("ML Result:", result);
+                
+                // Display result
+                resultText.textContent = JSON.stringify(result, null, 2);
+                status.textContent = 'Received ML response!';
+                
+                // Show popup based on prediction
+                if (result.success === false) {
+                    alert("? Error: " + result.error);
+                    button.style.background = '#999';
+                    button.textContent = 'Error';
+                } 
+                else if (result.prediction === "BOT") {
+                    alert("?? BOT DETECTED");
+                    button.style.background = '#ff4444';
+                    button.textContent = 'BOT DETECTED';
+                } 
+                else if (result.prediction === "HUMAN") {
+                    alert("? HUMAN DETECTED");
+                    button.style.background = '#4CAF50';
+                    button.textContent = 'HUMAN DETECTED';
+                }
+                
+            } catch (error) {
+                console.error("Error:", error);
+                status.textContent = 'Error: ' + error;
+                resultText.textContent = 'Error: ' + error;
+                alert("? Connection failed: " + error);
+                button.style.background = '#999';
+                button.textContent = 'Failed';
+            }
+        };
+        
+        status.textContent = '? Ready! Click the red button above';
+        console.log("Test page ready");
+    </script>
+    <!-- Add right before closing </body> tag -->
+<script src="/js/security-check.js"></script>
+</body>
+</html>

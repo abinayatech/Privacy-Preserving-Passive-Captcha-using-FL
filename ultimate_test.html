@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>ULTIMATE TEST - NO CACHE</title>
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        #testBtn { 
+            background: linear-gradient(45deg, red, orange);
+            color: white;
+            padding: 25px;
+            font-size: 24px;
+            border: 5px solid lime;
+            cursor: pointer;
+            margin: 20px;
+        }
+        #status { 
+            background: black;
+            color: lime;
+            padding: 15px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 ULTIMATE TEST - NO CACHE POSSIBLE</h1>
+    
+    <button id="testBtn">🔥 ULTIMATE TEST BUTTON</button>
+    
+    <div id="status">Initializing...</div>
+    
+    <script>
+        // INLINE SCRIPT - No external file, no cache
+        console.log("=== ULTIMATE INLINE TEST ===");
+        
+        const btn = document.getElementById("testBtn");
+        const status = document.getElementById("status");
+        
+        btn.onclick = async function() {
+            status.textContent = "Processing...";
+            btn.style.background = "blue";
+            
+            // FIRST alert
+            alert("🎯 ULTIMATE TEST: Button clicked!");
+            
+            try {
+                // Test Flask connection
+                const health = await fetch("http://localhost:5000/health");
+                const healthData = await health.json();
+                console.log("Flask:", healthData.status);
+                
+                // Send CORRECT format
+                const response = await fetch("http://localhost:5000/predict", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        features: [0.5, 0.6, 0.7, 0.8, 0.9],
+                        sessionId: "ultimate_" + Date.now()
+                    })
+                });
+                
+                const result = await response.json();
+                console.log("Result:", result);
+                status.textContent = JSON.stringify(result, null, 2);
+                
+                // Show popup
+                if (result.prediction === "BOT") {
+                    alert("🚫 BOT DETECTED");
+                    btn.style.background = "red";
+                    btn.textContent = "BOT DETECTED";
+                } 
+                else if (result.prediction === "HUMAN") {
+                    alert("✅ HUMAN DETECTED");
+                    btn.style.background = "green";
+                    btn.textContent = "HUMAN DETECTED";
+                }
+                
+            } catch (error) {
+                console.error("Error:", error);
+                alert("❌ Error: " + error);
+                btn.style.background = "gray";
+                btn.textContent = "ERROR";
+            }
+        };
+        
+        status.textContent = "✅ READY! Click the GRADIENT button";
+    </script>
+</body>
+</html>

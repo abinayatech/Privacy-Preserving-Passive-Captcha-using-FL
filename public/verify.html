@@ -1,0 +1,199 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Aadhaar</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="topbar">
+
+        <div class="left">
+            <img src="assets/logo.jpg"
+                 alt="Logo"
+                 class="emblem-img">
+
+            <div class="org">
+                Unique Identification Authority of India
+            </div>
+        </div>
+
+        <nav class="main-nav">
+            <a href="index.html">Home</a>
+            <a href="check-status.html">Check Status</a>
+            <a href="download.html">Download Aadhaar</a>
+            <a href="update.html">Update Aadhaar</a>
+            <a href="verify.html" class="active">Verify Aadhaar</a>
+            <a href="contact.html">Contact Us</a>
+        </nav>
+
+        <div class="logos-right">
+            <img src="assets/logo.jpg"
+                 alt="Logo"
+                 class="aadhaar-logo">
+        </div>
+
+    </header>
+
+    <!-- Main Content -->
+    <main class="form-page">
+
+        <section class="page-hero">
+            <h1>Verify Aadhaar</h1>
+
+            <p>
+                Verify whether an Aadhaar Number follows
+                the correct format and validation rules.
+            </p>
+        </section>
+
+        <div class="three-col">
+
+            <!-- Left Column -->
+            <section class="left-col">
+
+                <div class="form-card">
+
+                    <form id="verifyForm">
+
+                        <label class="field-title">
+                            12 Digit Aadhaar Number
+                        </label>
+
+                        <input
+                            type="text"
+                            id="verifyAadhaar"
+                            maxlength="14"
+                            placeholder="1234 5678 9012"
+                            required>
+
+                        <div
+                            id="captchaVerify"
+                            class="captcha-box"
+                            style="display:none;">
+
+                            <label>
+                                <input type="checkbox">
+                                I'm not a robot
+                            </label>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn orange">
+
+                            Verify Aadhaar
+
+                        </button>
+
+                    </form>
+
+                    <div
+                        id="verifyResult"
+                        class="result-box"
+                        style="display:none;margin-top:15px;">
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- Right Column -->
+            <aside class="right-col">
+
+                <div class="faq-card">
+
+                     <img
+                        src="assets/aadhar.jpg"
+                        alt="Update Aadhaar"
+                        style="width:100%;
+                               border-radius:10px;
+                               margin-bottom:15px;">
+
+                    <h3>Verification Information</h3>
+
+                    <p>
+                        <strong>Purpose:</strong>
+                        Verify whether an Aadhaar Number
+                        follows the correct format.
+                    </p>
+
+                    <p>
+                        <strong>Format:</strong>
+                        Aadhaar Numbers contain
+                        12 numeric digits.
+                    </p>
+
+                    <p>
+                        <strong>Security:</strong>
+                        Personal information is not stored
+                        during verification.
+                    </p>
+
+                    <p>
+                        <strong>Note:</strong>
+                        This is a demonstration portal.
+                        Actual verification requires
+                        UIDAI backend authentication.
+                    </p>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        © 2025 Aadhaar Demo Portal |
+        This is a demonstration site and is not affiliated with
+        the Unique Identification Authority of India (UIDAI).
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/login-detection.js"></script>
+
+    <script>
+        document
+            .getElementById("verifyForm")
+            .addEventListener("submit", function(e){
+
+                e.preventDefault();
+
+                const aadhaar =
+                    document
+                    .getElementById("verifyAadhaar")
+                    .value
+                    .replace(/\s/g,'');
+
+                const result =
+                    document.getElementById("verifyResult");
+
+                result.style.display = "block";
+
+                if(/^[0-9]{12}$/.test(aadhaar)){
+
+                    result.innerHTML =
+                        "<span style='color:green;font-weight:bold;'>✓ Aadhaar Format Valid</span>";
+
+                } else {
+
+                    result.innerHTML =
+                        "<span style='color:red;font-weight:bold;'>✗ Aadhaar Number must contain exactly 12 digits</span>";
+
+                }
+            });
+    </script>
+
+</body>
+</html>
+

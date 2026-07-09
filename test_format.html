@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Format</title>
+</head>
+<body>
+    <h2>Testing JavaScript Format</h2>
+    <button onclick="testFormat()">Test Format</button>
+    <div id="result"></div>
+    
+    <script>
+        async function testFormat() {
+            const resultDiv = document.getElementById("result");
+            
+            // CORRECT format (what we want)
+            const correctData = {
+                features: [0.1, 0.2, 0.3, 0.4, 0.5],
+                sessionId: "test_123"
+            };
+            
+            // WRONG format (what you had)
+            const wrongData = {
+                mouse_movements: 145,
+                typing_pattern: "none",
+                time_on_page: 30,
+                scroll_events: 12,
+                click_pattern: "single",
+                input_changes: 5
+            };
+            
+            try {
+                const response = await fetch("http://localhost:5000/predict", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(correctData)
+                });
+                
+                const result = await response.json();
+                resultDiv.innerHTML = `
+                    <h3 style="color:green">✅ CORRECT FORMAT WORKS!</h3>
+                    <pre>${JSON.stringify(result, null, 2)}</pre>
+                    <p>Data sent: ${JSON.stringify(correctData)}</p>
+                `;
+                
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <h3 style="color:red">❌ Error: ${error}</h3>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

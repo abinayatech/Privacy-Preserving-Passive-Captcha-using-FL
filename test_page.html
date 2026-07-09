@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>ML CAPTCHA TEST</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+        .test-box { background: white; padding: 20px; margin: 20px; border-radius: 10px; }
+        #testButton { background: red; color: white; padding: 15px; font-size: 20px; border: none; cursor: pointer; }
+        #testButton:hover { background: darkred; }
+        .log { background: black; color: lime; padding: 10px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>🔬 ML CAPTCHA Direct Test</h1>
+    
+    <div class="test-box">
+        <h2>Test Form</h2>
+        <form id="testForm">
+            <input type="text" id="testInput" placeholder="Enter Aadhaar">
+            <br><br>
+            <button type="button" id="testButton">TEST SUBMIT</button>
+        </form>
+    </div>
+    
+    <div class="test-box">
+        <h2>Console Log</h2>
+        <div id="log" class="log"></div>
+    </div>
+    
+    <script>
+        // Simple logger
+        function log(msg) {
+            document.getElementById('log').innerHTML += msg + '<br>';
+            console.log(msg);
+        }
+        
+        log("Page loaded");
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            log("DOM ready");
+            
+            const form = document.getElementById('testForm');
+            const button = document.getElementById('testButton');
+            
+            if (!form || !button) {
+                log("ERROR: Elements not found!");
+                return;
+            }
+            
+            log("Form and button found");
+            
+            // Prevent form submit
+            form.addEventListener('submit', function(e) {
+                log("Form submit event - PREVENTED");
+                e.preventDefault();
+                alert("Form submit blocked!");
+                return false;
+            });
+            
+            // Button click handler
+            button.addEventListener('click', async function(e) {
+                log("Button clicked!");
+                e.preventDefault();
+                
+                // Change button color
+                button.style.background = 'orange';
+                button.textContent = 'Processing...';
+                
+                // Test Flask connection
+                try {
+                    log("Testing Flask connection...");
+                    const response = await fetch('http://localhost:5000/health');
+                    const data = await response.json();
+                    log("✅ Flask server: " + data.status);
+                    
+                    // Test prediction
+                    log("Testing prediction...");
+                    const predResponse = await fetch('http://localhost:5000/predict', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            features: [0.5, 0.6, 0.7, 0.8, 0.9],
+                            sessionId: 'direct_test'
+                        })
+                    });
+                    
+                    const result = await predResponse.json();
+                    log("Prediction result: " + JSON.stringify(result));
+                    
+                    if (result.prediction) {
+                        alert(result.prediction + " DETECTED!");
+                        button.style.background = 'green';
+                        button.textContent = '✓ ' + result.prediction;
+                    }
+                    
+                } catch (error) {
+                    log("❌ Error: " + error);
+                    alert("Test failed: " + error);
+                    button.style.background = 'red';
+                    button.textContent = '❌ Failed';
+                }
+            });
+            
+            log("Event handlers attached - READY!");
+        });
+    </script>
+</body>
+</html>

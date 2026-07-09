@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>NO-CACHE Test</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        #testButton { 
+            background: red; 
+            color: white; 
+            padding: 20px; 
+            font-size: 24px; 
+            border: none;
+            cursor: pointer;
+            margin: 20px;
+        }
+        #status { 
+            background: black; 
+            color: lime; 
+            padding: 15px; 
+            font-family: monospace;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚫 NO-CACHE Test Page</h1>
+    <p>This page cannot be cached by browser</p>
+    
+    <button id="testButton">🔥 CLICK ME TO TEST</button>
+    
+    <div id="status">Ready...</div>
+    
+    <script>
+        // SIMPLE DIRECT TEST - No cache issues
+        console.log("=== NO-CACHE TEST STARTED ===");
+        
+        const button = document.getElementById("testButton");
+        const status = document.getElementById("status");
+        
+        button.onclick = async function() {
+            console.log("🔥 Button clicked!");
+            status.innerHTML = "Processing...";
+            button.disabled = true;
+            button.style.background = "orange";
+            
+            // Test 1: Alert immediately
+            alert("✅ ALERT: Button clicked! Testing ML...");
+            
+            // Test 2: Call Flask
+            try {
+                status.innerHTML = "Calling Flask server...";
+                
+                const response = await fetch("http://localhost:5000/predict", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        features: [0.5, 0.6, 0.7, 0.8, 0.9],
+                        sessionId: "nocache_" + Date.now()
+                    })
+                });
+                
+                const result = await response.json();
+                console.log("Result:", result);
+                status.innerHTML = "Response: " + JSON.stringify(result, null, 2);
+                
+                // Show popup
+                if (result.prediction === "BOT") {
+                    alert("🚫 BOT DETECTED");
+                    button.style.background = "red";
+                } else if (result.prediction === "HUMAN") {
+                    alert("✅ HUMAN DETECTED");
+                    button.style.background = "green";
+                }
+                
+            } catch (error) {
+                console.error("Error:", error);
+                status.innerHTML = "Error: " + error;
+                alert("❌ Failed: " + error);
+            }
+            
+            button.disabled = false;
+        };
+        
+        status.innerHTML = "✅ Ready! Click the red button";
+        console.log("Test page ready");
+    </script>
+</body>
+</html>

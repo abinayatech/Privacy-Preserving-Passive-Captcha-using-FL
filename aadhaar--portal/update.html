@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+  <title>Update Aadhaar Details</title>
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <script src="js/script.js" defer></script>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header class="topbar">
+
+    <div class="left">
+      <img src="assets/logo.jpg"
+           class="emblem-img"
+           alt="Logo">
+
+      <div class="org">
+        Unique Identification Authority of India
+      </div>
+    </div>
+
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="check-status.html">Check Status</a>
+      <a href="download.html">Download Aadhaar</a>
+      <a href="update.html" class="active">Update Aadhaar</a>
+      <a href="verify.html">Verify Aadhaar</a>
+      <a href="contact.html">Contact Us</a>
+    </nav>
+
+    <img src="assets/logo.jpg"
+         class="aadhaar-logo"
+         alt="Aadhaar Logo">
+
+  </header>
+
+  <!-- Main Content -->
+  <main class="form-page">
+
+    <section class="page-hero">
+
+      <h1>Update Aadhaar Details</h1>
+
+      <p>
+        Submit a request to update your Aadhaar
+        information including name, address,
+        or date of birth.
+      </p>
+
+    </section>
+
+    <div class="three-col">
+
+      <!-- Left Side Form -->
+      <section class="left-col">
+
+        <div class="form-card">
+
+          <form id="updateForm">
+
+            <label class="field-title">
+              Full Name
+            </label>
+
+            <input
+              type="text"
+              id="fullName"
+              maxlength="60"
+              placeholder="Enter Full Name"
+              required>
+
+            <label class="field-title">
+              Aadhaar Number
+            </label>
+
+            <input
+              id="updateAadhaar"
+              maxlength="14"
+              placeholder="1234 5678 9012"
+              required>
+
+            <div id="updateError"
+                 class="error-msg">
+            </div>
+
+            <label class="field-title">
+              New Address
+            </label>
+
+            <textarea
+              id="newAddress"
+              placeholder="Enter New Address"
+              required>
+            </textarea>
+
+            <label class="field-title">
+              Reason For Update
+            </label>
+
+            <select id="updateReason" required>
+
+              <option value="">
+                -- Select Reason --
+              </option>
+
+              <option value="address">
+                Address Change
+              </option>
+
+              <option value="name">
+                Name Correction
+              </option>
+
+              <option value="dob">
+                DOB Correction
+              </option>
+
+            </select>
+
+            <!-- Captcha -->
+            <div id="captchaUpdate"
+                 class="captcha-box"
+                 style="display:none;">
+
+              <label>
+                <input type="checkbox">
+                I'm not a robot
+              </label>
+
+            </div>
+
+            <button
+              type="submit"
+              class="btn blue">
+
+              Submit Request
+
+            </button>
+
+          </form>
+
+        </div>
+
+      </section>
+
+      <!-- Right Side -->
+      <aside class="right-col">
+
+        <div class="faq-card">
+
+          <img
+            src="assets/aadhar.jpg"
+            alt="Update Aadhaar"
+            style="
+              width:100%;
+              border-radius:10px;
+              margin-bottom:15px;
+            ">
+
+          <h3>Helpful Information</h3>
+
+          <p>
+            <strong>Eligibility:</strong>
+            Aadhaar holders can update
+            Name, Address and Date of Birth.
+          </p>
+
+          <p>
+            <strong>Proof Required:</strong>
+            Supporting documents may be required
+            for verification.
+          </p>
+
+          <p>
+            <strong>Processing Time:</strong>
+            Requests are generally processed
+            within a few working days.
+          </p>
+
+          <p>
+            <strong>Security:</strong>
+            All requests are securely handled
+            and monitored.
+          </p>
+
+          <p>
+            <strong>Note:</strong>
+            This is a demonstration website.
+            Real Aadhaar updates require UIDAI
+            verification.
+          </p>
+
+        </div>
+
+      </aside>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    © 2025 Aadhaar Demo Portal |
+    This is a demonstration site and is not affiliated
+    with the Unique Identification Authority of India (UIDAI).
+  </footer>
+
+  <script src="js/login-detection.js" defer></script>
+
+</body>
+</html>
